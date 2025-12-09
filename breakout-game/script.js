@@ -1,240 +1,179 @@
+/**
+ * 打砖块游戏 - Breakout Game
+ * 
+ * 功能说明：
+ * - 使用Canvas绘制游戏界面
+ * - 控制挡板左右移动来反弹小球
+ * - 小球击中砖块后砖块消失并得分
+ * - 当小球落到底部时游戏重置
+ * - 清除所有砖块后游戏重新开始
+ * 
+ * 需要实现的功能：
+ * 1. 获取DOM元素（规则按钮、关闭按钮、规则面板、画布）
+ * 2. 初始化游戏变量（分数、砖块行列数、延迟时间）
+ * 3. 创建小球属性对象（位置、大小、速度、方向、可见性）
+ * 4. 创建挡板属性对象（位置、宽高、速度、移动方向）
+ * 5. 创建砖块属性对象（宽高、间距、偏移量）
+ * 6. 初始化砖块二维数组
+ * 7. 实现drawBall()函数 - 在画布上绘制小球
+ * 8. 实现drawPaddle()函数 - 在画布上绘制挡板
+ * 9. 实现drawScore()函数 - 在画布上显示分数
+ * 10. 实现drawBricks()函数 - 在画布上绘制所有砖块
+ * 11. 实现movePaddle()函数 - 移动挡板并检测边界
+ * 12. 实现moveBall()函数 - 移动小球并处理碰撞检测
+ * 13. 实现increaseScore()函数 - 增加分数并检查是否通关
+ * 14. 实现showAllBricks()函数 - 重置所有砖块为可见
+ * 15. 实现draw()函数 - 清空画布并绘制所有元素
+ * 16. 实现update()函数 - 游戏主循环，更新并重绘
+ * 17. 实现keyDown()函数 - 处理按键按下事件
+ * 18. 实现keyUp()函数 - 处理按键释放事件
+ * 19. 添加键盘事件监听器
+ * 20. 添加规则按钮点击事件监听器
+ */
+
+// ==================== DOM 元素获取 ====================
 const rulesBtn = document.getElementById('rules-btn');
 const closeBtn = document.getElementById('close-btn');
 const rules = document.getElementById('rules');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
+// ==================== 游戏配置变量 ====================
 let score = 0;
-
 const brickRowCount = 9;
 const brickColumnCount = 5;
-const delay = 500; //delay to reset the game
+const delay = 500;
 
-// Create ball props
+// ==================== 小球属性 ====================
+// TODO: 创建小球对象，包含位置(x,y)、大小(size)、速度(speed)、方向(dx,dy)、可见性(visible)
 const ball = {
-  x: canvas.width / 2,
-  y: canvas.height / 2,
-  size: 10,
-  speed: 4,
-  dx: 4,
-  dy: -4,
-  visible: true
+  // 在此实现
 };
 
-// Create paddle props
+// ==================== 挡板属性 ====================
+// TODO: 创建挡板对象，包含位置(x,y)、宽高(w,h)、速度(speed)、移动方向(dx)、可见性(visible)
 const paddle = {
-  x: canvas.width / 2 - 40,
-  y: canvas.height - 20,
-  w: 80,
-  h: 10,
-  speed: 8,
-  dx: 0,
-  visible: true
+  // 在此实现
 };
 
-// Create brick props
+// ==================== 砖块属性 ====================
+// TODO: 创建砖块信息对象，包含宽高(w,h)、间距(padding)、偏移量(offsetX,offsetY)、可见性(visible)
 const brickInfo = {
-  w: 70,
-  h: 20,
-  padding: 10,
-  offsetX: 45,
-  offsetY: 60,
-  visible: true
+  // 在此实现
 };
 
-// Create bricks
+// ==================== 初始化砖块数组 ====================
+// TODO: 创建二维数组存储所有砖块的位置和属性
 const bricks = [];
-for (let i = 0; i < brickRowCount; i++) {
-  bricks[i] = [];
-  for (let j = 0; j < brickColumnCount; j++) {
-    const x = i * (brickInfo.w + brickInfo.padding) + brickInfo.offsetX;
-    const y = j * (brickInfo.h + brickInfo.padding) + brickInfo.offsetY;
-    bricks[i][j] = { x, y, ...brickInfo };
-  }
-}
 
-// Draw ball on canvas
+// ==================== 绘制函数 ====================
+
+/**
+ * 在画布上绘制小球
+ * 使用arc方法绘制圆形
+ */
 function drawBall() {
-  ctx.beginPath();
-  ctx.arc(ball.x, ball.y, ball.size, 0, Math.PI * 2);
-  ctx.fillStyle = ball.visible ? '#0095dd' : 'transparent';
-  ctx.fill();
-  ctx.closePath();
+  // TODO: 实现小球绘制
 }
 
-// Draw paddle on canvas
+/**
+ * 在画布上绘制挡板
+ * 使用rect方法绘制矩形
+ */
 function drawPaddle() {
-  ctx.beginPath();
-  ctx.rect(paddle.x, paddle.y, paddle.w, paddle.h);
-  ctx.fillStyle = paddle.visible ? '#0095dd' : 'transparent';
-  ctx.fill();
-  ctx.closePath();
+  // TODO: 实现挡板绘制
 }
 
-// Draw score on canvas
+/**
+ * 在画布上显示当前分数
+ */
 function drawScore() {
-  ctx.font = '20px Arial';
-  ctx.fillText(`Score: ${score}`, canvas.width - 100, 30);
+  // TODO: 实现分数显示
 }
 
-// Draw bricks on canvas
+/**
+ * 在画布上绘制所有可见的砖块
+ */
 function drawBricks() {
-  bricks.forEach(column => {
-    column.forEach(brick => {
-      ctx.beginPath();
-      ctx.rect(brick.x, brick.y, brick.w, brick.h);
-      ctx.fillStyle = brick.visible ? '#0095dd' : 'transparent';
-      ctx.fill();
-      ctx.closePath();
-    });
-  });
+  // TODO: 实现砖块绘制
 }
 
-// Move paddle on canvas
+// ==================== 移动函数 ====================
+
+/**
+ * 移动挡板
+ * 需要检测边界防止挡板移出画布
+ */
 function movePaddle() {
-  paddle.x += paddle.dx;
-
-  // Wall detection
-  if (paddle.x + paddle.w > canvas.width) {
-    paddle.x = canvas.width - paddle.w;
-  }
-
-  if (paddle.x < 0) {
-    paddle.x = 0;
-    }
+  // TODO: 实现挡板移动和边界检测
 }
 
-// Move ball on canvas
+/**
+ * 移动小球
+ * 需要实现：
+ * - 墙壁碰撞检测（左右上）
+ * - 挡板碰撞检测
+ * - 砖块碰撞检测
+ * - 底部边界检测（游戏失败）
+ */
 function moveBall() {
-  ball.x += ball.dx;
-  ball.y += ball.dy;
-
-  // Wall collision (right/left)
-  if (ball.x + ball.size > canvas.width || ball.x - ball.size < 0) {
-    ball.dx *= -1; // ball.dx = ball.dx * -1
-  }
-
-  // Wall collision (top/bottom)
-  if (ball.y + ball.size > canvas.height || ball.y - ball.size < 0) {
-    ball.dy *= -1;
-  }
-
-  // console.log(ball.x, ball.y);
-
-  // Paddle collision
-  if (
-    ball.x - ball.size > paddle.x &&
-    ball.x + ball.size < paddle.x + paddle.w &&
-    ball.y + ball.size > paddle.y
-  ) {
-    ball.dy = -ball.speed;
-  }
-
-  // Brick collision
-  bricks.forEach(column => {
-    column.forEach(brick => {
-      if (brick.visible) {
-        if (
-          ball.x - ball.size > brick.x && // left brick side check
-          ball.x + ball.size < brick.x + brick.w && // right brick side check
-          ball.y + ball.size > brick.y && // top brick side check
-          ball.y - ball.size < brick.y + brick.h // bottom brick side check
-        ) {
-          ball.dy *= -1;
-          brick.visible = false;
-
-          increaseScore();
-        }
-      }
-    });
-  });
-
-  // Hit bottom wall - Lose
-  if (ball.y + ball.size > canvas.height) {
-    showAllBricks();
-    score = 0;
-  }
+  // TODO: 实现小球移动和所有碰撞检测
 }
 
-// Increase score
+// ==================== 游戏逻辑函数 ====================
+
+/**
+ * 增加分数
+ * 检查是否清除所有砖块（通关）
+ */
 function increaseScore() {
-  score++;
-
-  if (score % (brickRowCount * brickColumnCount) === 0) {
-
-      ball.visible = false;
-      paddle.visible = false;
-
-      //After 0.5 sec restart the game
-      setTimeout(function () {
-          showAllBricks();
-          score = 0;
-          paddle.x = canvas.width / 2 - 40;
-          paddle.y = canvas.height - 20;
-          ball.x = canvas.width / 2;
-          ball.y = canvas.height / 2;
-          ball.visible = true;
-          paddle.visible = true;
-      },delay)
-  }
+  // TODO: 实现分数增加和通关检测
 }
 
-// Make all bricks appear
+/**
+ * 重置所有砖块为可见状态
+ */
 function showAllBricks() {
-  bricks.forEach(column => {
-    column.forEach(brick => (brick.visible = true));
-  });
+  // TODO: 实现砖块重置
 }
 
-// Draw everything
+/**
+ * 清空画布并绘制所有游戏元素
+ */
 function draw() {
-  // clear canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  drawBall();
-  drawPaddle();
-  drawScore();
-  drawBricks();
+  // TODO: 实现画面绘制
 }
 
-// Update canvas drawing and animation
+/**
+ * 游戏主循环
+ * 使用requestAnimationFrame实现动画
+ */
 function update() {
-  movePaddle();
-  moveBall();
-
-  // Draw everything
-  draw();
-
-  requestAnimationFrame(update);
+  // TODO: 实现游戏循环
 }
 
-update();
+// ==================== 事件处理函数 ====================
 
-// Keydown event
+/**
+ * 处理按键按下事件
+ * 左右方向键控制挡板移动
+ */
 function keyDown(e) {
-  if (e.key === 'Right' || e.key === 'ArrowRight') {
-    paddle.dx = paddle.speed;
-  } else if (e.key === 'Left' || e.key === 'ArrowLeft') {
-    paddle.dx = -paddle.speed;
-  }
+  // TODO: 实现按键按下处理
 }
 
-// Keyup event
+/**
+ * 处理按键释放事件
+ * 停止挡板移动
+ */
 function keyUp(e) {
-  if (
-    e.key === 'Right' ||
-    e.key === 'ArrowRight' ||
-    e.key === 'Left' ||
-    e.key === 'ArrowLeft'
-  ) {
-    paddle.dx = 0;
-  }
+  // TODO: 实现按键释放处理
 }
 
-// Keyboard event handlers
-document.addEventListener('keydown', keyDown);
-document.addEventListener('keyup', keyUp);
+// ==================== 事件监听器 ====================
+// TODO: 添加键盘事件监听器
 
-// Rules and close event handlers
-rulesBtn.addEventListener('click', () => rules.classList.add('show'));
-closeBtn.addEventListener('click', () => rules.classList.remove('show'));
+// TODO: 添加规则按钮事件监听器
+
+// ==================== 启动游戏 ====================
+// TODO: 调用update()启动游戏循环

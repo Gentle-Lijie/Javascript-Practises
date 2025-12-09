@@ -1,3 +1,24 @@
+/**
+ * 记忆卡片应用 - Memory Cards
+ * 
+ * 功能说明：
+ * - 创建问答式记忆卡片
+ * - 点击卡片翻转显示答案
+ * - 左右箭头切换卡片
+ * - 使用localStorage持久化存储卡片
+ * - 支持添加和清除卡片
+ * 
+ * 需要实现的功能：
+ * 1. 获取DOM元素（卡片容器、导航按钮、表单元素等）
+ * 2. 实现createCards()函数 - 创建所有卡片
+ * 3. 实现createCard()函数 - 创建单个卡片元素
+ * 4. 实现updateCurrentText()函数 - 更新卡片计数显示
+ * 5. 实现getCardsData()函数 - 从localStorage获取卡片数据
+ * 6. 实现setCardsData()函数 - 保存卡片数据到localStorage
+ * 7. 添加所有事件监听器（上一张、下一张、添加、清除）
+ */
+
+// ==================== DOM 元素获取 ====================
 const cardsContainer = document.getElementById('cards-container');
 const prevBtn = document.getElementById('prev');
 const nextBtn = document.getElementById('next');
@@ -10,148 +31,83 @@ const addCardBtn = document.getElementById('add-card');
 const clearBtn = document.getElementById('clear');
 const addContainer = document.getElementById('add-container');
 
-// Keep track of current card
+// ==================== 状态变量 ====================
+// 跟踪当前卡片索引
 let currentActiveCard = 0;
 
-// Store DOM cards
+// 存储DOM卡片元素
 const cardsEl = [];
 
-// Store card data
-const cardsData = getCardsData();
+// TODO: 从localStorage获取卡片数据
+const cardsData = [];
 
-// const cardsData = [
-//   {
-//     question: 'What must a variable begin with?',
-//     answer: 'A letter, $ or _'
-//   },
-//   {
-//     question: 'What is a variable?',
-//     answer: 'Container for a piece of data'
-//   },
-//   {
-//     question: 'Example of Case Sensitive Variable',
-//     answer: 'thisIsAVariable'
-//   }
-// ];
+// ==================== 卡片创建函数 ====================
 
-// Create all cards
+/**
+ * 创建所有卡片
+ * 遍历卡片数据数组，为每个创建DOM元素
+ */
 function createCards() {
-  cardsData.forEach((data, index) => createCard(data, index));
+  // TODO: 实现批量创建卡片
 }
 
-// Create a single card in DOM
+/**
+ * 创建单个卡片DOM元素
+ * 卡片包含正面（问题）和背面（答案）
+ * @param {Object} data - 卡片数据 {question, answer}
+ * @param {number} index - 卡片索引
+ */
 function createCard(data, index) {
-  const card = document.createElement('div');
-  card.classList.add('card');
-
-  if (index === 0) {
-    card.classList.add('active');
-  }
-
-  card.innerHTML = `
-  <div class="inner-card">
-  <div class="inner-card-front">
-    <p>
-      ${data.question}
-    </p>
-  </div>
-  <div class="inner-card-back">
-    <p>
-      ${data.answer}
-    </p>
-  </div>
-</div>
-  `;
-
-  card.addEventListener('click', () => card.classList.toggle('show-answer'));
-
-  // Add to DOM cards
-  cardsEl.push(card);
-
-  cardsContainer.appendChild(card);
-
-  updateCurrentText();
+  // TODO: 实现单个卡片创建
+  // 1. 创建div元素
+  // 2. 添加card类，第一张添加active类
+  // 3. 创建正面和背面HTML
+  // 4. 添加点击翻转事件
+  // 5. 添加到cardsEl数组和DOM
 }
 
-// Show number of cards
+/**
+ * 更新当前卡片数/总数显示
+ */
 function updateCurrentText() {
-  currentEl.innerText = `${currentActiveCard + 1}/${cardsEl.length}`;
+  // TODO: 实现计数更新
 }
 
-// Get cards from local storage
+// ==================== localStorage函数 ====================
+
+/**
+ * 从localStorage获取卡片数据
+ * @returns {Array} 卡片数据数组
+ */
 function getCardsData() {
-  const cards = JSON.parse(localStorage.getItem('cards'));
-  return cards === null ? [] : cards;
+  // TODO: 实现数据获取
 }
 
-// Add card to local storage
+/**
+ * 保存卡片数据到localStorage
+ * @param {Array} cards - 卡片数据数组
+ */
 function setCardsData(cards) {
-  localStorage.setItem('cards', JSON.stringify(cards));
-  window.location.reload();
+  // TODO: 实现数据保存
 }
 
-createCards();
+// ==================== 事件监听器 ====================
 
-// Event listeners
+// TODO: 下一张按钮事件
+// 当前卡片移出，下一张卡片显示
 
-// Next button
-nextBtn.addEventListener('click', () => {
-  cardsEl[currentActiveCard].className = 'card left';
+// TODO: 上一张按钮事件
+// 当前卡片移出，上一张卡片显示
 
-  currentActiveCard = currentActiveCard + 1;
+// TODO: 显示添加表单按钮事件
+// TODO: 隐藏添加表单按钮事件
 
-  if (currentActiveCard > cardsEl.length - 1) {
-    currentActiveCard = cardsEl.length - 1;
-  }
+// TODO: 添加新卡片按钮事件
+// 获取问题和答案输入值
+// 创建新卡片并保存
 
-  cardsEl[currentActiveCard].className = 'card active';
+// TODO: 清除所有卡片按钮事件
+// 清空localStorage和DOM
 
-  updateCurrentText();
-});
-
-// Prev button
-prevBtn.addEventListener('click', () => {
-  cardsEl[currentActiveCard].className = 'card right';
-
-  currentActiveCard = currentActiveCard - 1;
-
-  if (currentActiveCard < 0) {
-    currentActiveCard = 0;
-  }
-
-  cardsEl[currentActiveCard].className = 'card active';
-
-  updateCurrentText();
-});
-
-// Show add container
-showBtn.addEventListener('click', () => addContainer.classList.add('show'));
-// Hide add container
-hideBtn.addEventListener('click', () => addContainer.classList.remove('show'));
-
-// Add new card
-addCardBtn.addEventListener('click', () => {
-  const question = questionEl.value;
-  const answer = answerEl.value;
-
-  if (question.trim() && answer.trim()) {
-    const newCard = { question, answer };
-
-    createCard(newCard);
-
-    questionEl.value = '';
-    answerEl.value = '';
-
-    addContainer.classList.remove('show');
-
-    cardsData.push(newCard);
-    setCardsData(cardsData);
-  }
-});
-
-// Clear cards button
-clearBtn.addEventListener('click', () => {
-  localStorage.clear();
-  cardsContainer.innerHTML = '';
-  window.location.reload();
-});
+// ==================== 初始化 ====================
+// TODO: 调用createCards()创建初始卡片

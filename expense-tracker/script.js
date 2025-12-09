@@ -1,3 +1,25 @@
+/**
+ * 收支追踪器 - Expense Tracker
+ * 
+ * 功能说明：
+ * - 添加收入和支出交易记录
+ * - 计算并显示总余额、总收入、总支出
+ * - 使用localStorage持久化存储数据
+ * - 支持删除交易记录
+ * 
+ * 需要实现的功能：
+ * 1. 获取DOM元素（余额、收入、支出显示、列表、表单、输入框）
+ * 2. 从localStorage加载已保存的交易记录
+ * 3. 实现addTransaction()函数 - 添加新交易
+ * 4. 实现generateID()函数 - 生成随机ID
+ * 5. 实现addTransactionDOM()函数 - 将交易添加到DOM列表
+ * 6. 实现updateValues()函数 - 更新余额、收入、支出显示
+ * 7. 实现removeTransaction()函数 - 删除交易
+ * 8. 实现updateLocalStorage()函数 - 保存到localStorage
+ * 9. 实现init()函数 - 初始化应用
+ */
+
+// ==================== DOM 元素获取 ====================
 const balance = document.getElementById('balance');
 const money_plus = document.getElementById('money-plus');
 const money_minus = document.getElementById('money-minus');
@@ -6,115 +28,77 @@ const form = document.getElementById('form');
 const text = document.getElementById('text');
 const amount = document.getElementById('amount');
 
-// const dummyTransactions = [
-//   { id: 1, text: 'Flower', amount: -20 },
-//   { id: 2, text: 'Salary', amount: 300 },
-//   { id: 3, text: 'Book', amount: -10 },
-//   { id: 4, text: 'Camera', amount: 150 }
-// ];
+// ==================== 数据存储 ====================
+// TODO: 从localStorage加载交易记录
+// 如果没有记录则使用空数组
+let transactions = [];
 
-const localStorageTransactions = JSON.parse(
-  localStorage.getItem('transactions')
-);
+// ==================== 交易操作函数 ====================
 
-let transactions =
-  localStorage.getItem('transactions') !== null ? localStorageTransactions : [];
-
-// Add transaction
+/**
+ * 添加新交易
+ * 验证输入不为空
+ * 创建交易对象并添加到数组
+ * 更新DOM和localStorage
+ * @param {Event} e - 表单提交事件
+ */
 function addTransaction(e) {
-  e.preventDefault();
-
-  if (text.value.trim() === '' || amount.value.trim() === '') {
-    alert('Please add a text and amount');
-  } else {
-    const transaction = {
-      id: generateID(),
-      text: text.value,
-      amount: +amount.value
-    };
-
-    transactions.push(transaction);
-
-    addTransactionDOM(transaction);
-
-    updateValues();
-
-    updateLocalStorage();
-
-    text.value = '';
-    amount.value = '';
-  }
+  // TODO: 实现添加交易
 }
 
-// Generate random ID
+/**
+ * 生成随机交易ID
+ * @returns {number} 随机ID
+ */
 function generateID() {
-  return Math.floor(Math.random() * 100000000);
+  // TODO: 实现ID生成
 }
 
-// Add transactions to DOM list
+/**
+ * 将交易添加到DOM列表
+ * 根据金额正负添加不同的样式类
+ * @param {Object} transaction - 交易对象
+ */
 function addTransactionDOM(transaction) {
-  // Get sign
-  const sign = transaction.amount < 0 ? '-' : '+';
-
-  const item = document.createElement('li');
-
-  // Add class based on value
-  item.classList.add(transaction.amount < 0 ? 'minus' : 'plus');
-
-  item.innerHTML = `
-    ${transaction.text} <span>${sign}${Math.abs(
-    transaction.amount
-  )}</span> <button class="delete-btn" onclick="removeTransaction(${
-    transaction.id
-  })">x</button>
-  `;
-
-  list.appendChild(item);
+  // TODO: 实现DOM添加
 }
 
-// Update the balance, income and expense
+/**
+ * 更新余额、收入和支出显示
+ * 使用map获取所有金额
+ * 使用reduce计算总和
+ * 使用filter区分收入和支出
+ */
 function updateValues() {
-  const amounts = transactions.map(transaction => transaction.amount);
-
-  const total = amounts.reduce((acc, item) => (acc += item), 0).toFixed(2);
-
-  const income = amounts
-    .filter(item => item > 0)
-    .reduce((acc, item) => (acc += item), 0)
-    .toFixed(2);
-
-  const expense = (
-    amounts.filter(item => item < 0).reduce((acc, item) => (acc += item), 0) *
-    -1
-  ).toFixed(2);
-
-  balance.innerText = `$${total}`;
-  money_plus.innerText = `$${income}`;
-  money_minus.innerText = `$${expense}`;
+  // TODO: 实现数值更新
 }
 
-// Remove transaction by ID
+/**
+ * 根据ID删除交易
+ * 使用filter过滤掉指定交易
+ * @param {number} id - 要删除的交易ID
+ */
 function removeTransaction(id) {
-  transactions = transactions.filter(transaction => transaction.id !== id);
-
-  updateLocalStorage();
-
-  init();
+  // TODO: 实现删除交易
 }
 
-// Update local storage transactions
+/**
+ * 将交易记录保存到localStorage
+ */
 function updateLocalStorage() {
-  localStorage.setItem('transactions', JSON.stringify(transactions));
+  // TODO: 实现localStorage更新
 }
 
-// Init app
+/**
+ * 初始化应用
+ * 清空列表并重新渲染所有交易
+ */
 function init() {
-  list.innerHTML = '';
-
-  transactions.forEach(addTransactionDOM);
-  updateValues();
+  // TODO: 实现初始化
 }
 
-init();
+// ==================== 事件监听器 ====================
+// TODO: 表单提交事件
 
-form.addEventListener('submit', addTransaction);
+// ==================== 启动应用 ====================
+// TODO: 调用init()初始化

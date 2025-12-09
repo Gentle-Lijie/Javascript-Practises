@@ -1,79 +1,33 @@
+/**
+ * 产品筛选应用 - Product Filtering
+ * 
+ * 功能说明：
+ * - 显示产品列表
+ * - 按类别复选框筛选产品
+ * - 按搜索关键词筛选产品
+ * - 添加到购物车功能
+ * - 显示购物车数量
+ * 
+ * 需要实现的功能：
+ * 1. 定义产品数据数组（包含名称、图片URL、类型、价格）
+ * 2. 获取DOM元素（产品容器、复选框、搜索框、购物车按钮等）
+ * 3. 实现createProductElement()函数 - 创建产品卡片元素
+ * 4. 实现addToCart()函数 - 添加/移除购物车
+ * 5. 实现filterProducts()函数 - 根据搜索和类别筛选产品
+ * 6. 添加所有事件监听器
+ */
+
+// ==================== 产品数据 ====================
+// TODO: 定义产品数组，每个产品包含：
+// - name: 产品名称
+// - url: 图片路径
+// - type: 产品类型（games/smartphones/cameras/televisions）
+// - price: 价格
 const products = [
-  {
-    name: 'Sony Playstation 5',
-    url: 'images/playstation_5.png',
-    type: 'games',
-    price: 499.99,
-  },
-  {
-    name: 'Samsung Galaxy',
-    url: 'images/samsung_galaxy.png',
-    type: 'smartphones',
-    price: 399.99,
-  },
-  {
-    name: 'Cannon EOS Camera',
-    url: 'images/cannon_eos_camera.png',
-    type: 'cameras',
-    price: 749.99,
-  },
-  {
-    name: 'Sony A7 Camera',
-    url: 'images/sony_a7_camera.png',
-    type: 'cameras',
-    price: 1999.99,
-  },
-  {
-    name: 'LG TV',
-    url: 'images/lg_tv.png',
-    type: 'televisions',
-    price: 799.99,
-  },
-  {
-    name: 'Nintendo Switch',
-    url: 'images/nintendo_switch.png',
-    type: 'games',
-    price: 299.99,
-  },
-  {
-    name: 'Xbox Series X',
-    url: 'images/xbox_series_x.png',
-    type: 'games',
-    price: 499.99,
-  },
-  {
-    name: 'Samsung TV',
-    url: 'images/samsung_tv.png',
-    type: 'televisions',
-    price: 1099.99,
-  },
-  {
-    name: 'Google Pixel',
-    url: 'images/google_pixel.png',
-    type: 'smartphones',
-    price: 499.99,
-  },
-  {
-    name: 'Sony ZV1F Camera',
-    url: 'images/sony_zv1f_camera.png',
-    type: 'cameras',
-    price: 799.99,
-  },
-  {
-    name: 'Toshiba TV',
-    url: 'images/toshiba_tv.png',
-    type: 'televisions',
-    price: 499.99,
-  },
-  {
-    name: 'iPhone 14',
-    url: 'images/iphone_14.png',
-    type: 'smartphones',
-    price: 999.99,
-  },
+  // 在此添加产品数据
 ];
 
-// Get DOM elements
+// ==================== DOM 元素获取 ====================
 const productsWrapperEl = document.getElementById('products-wrapper');
 const checkEls = document.querySelectorAll('.check');
 const filtersContainer = document.getElementById('filters-container');
@@ -81,100 +35,55 @@ const searchInput = document.getElementById('search');
 const cartButton = document.getElementById('cartButton');
 const cartCount = document.getElementById('cartCount');
 
-// Initialize cart item count
+// ==================== 状态变量 ====================
+// 购物车商品数量
 let cartItemCount = 0;
 
-// Initialize products
+// 存储产品DOM元素
 const productsEls = [];
 
-// Loop over the products and create the product elements
-products.forEach((product) => {
-  const productEl = createProductElement(product);
-  productsEls.push(productEl);
-  productsWrapperEl.appendChild(productEl);
-});
+// ==================== 初始化产品显示 ====================
+// TODO: 遍历产品数组，创建产品元素并添加到DOM
 
-// Add filter event listeners
-filtersContainer.addEventListener('change', filterProducts);
-searchInput.addEventListener('input', filterProducts);
+// ==================== 事件监听器绑定 ====================
+// TODO: 筛选器变化事件
+// TODO: 搜索输入事件
 
-// Create product element
+// ==================== 产品创建函数 ====================
+
+/**
+ * 创建产品卡片元素
+ * @param {Object} product - 产品对象
+ * @returns {HTMLElement} 产品元素
+ */
 function createProductElement(product) {
-  const productEl = document.createElement('div');
-
-  productEl.className = 'item space-y-2';
-
-  productEl.innerHTML = `<div
-  class="bg-gray-100 flex justify-center relative overflow-hidden group cursor-pointer border"
->
-  <img
-    src="${product.url}"
-    alt="${product.name}"
-    class="w-full h-full object-cover"
-  />
-  <span
-    class="status bg-black text-white absolute bottom-0 left-0 right-0 text-center py-2 translate-y-full transition group-hover:translate-y-0"
-    >Add To Cart</span
-  >
-</div>
-<p class="text-xl">${product.name}</p>
-<strong>$${product.price.toLocaleString()}</strong>`;
-
-  productEl.querySelector('.status').addEventListener('click', addToCart);
-
-  return productEl;
+  // TODO: 实现产品元素创建
+  // 1. 创建div元素
+  // 2. 设置类名和内部HTML
+  // 3. 添加图片、名称、价格
+  // 4. 添加"添加到购物车"按钮
+  // 5. 为按钮添加点击事件
 }
 
-// Toggle add/remove from cart
+/**
+ * 切换添加/移除购物车
+ * @param {Event} e - 点击事件
+ */
 function addToCart(e) {
-  const statusEl = e.target;
-
-  if (statusEl.classList.contains('added')) {
-    // Remove from cart
-    statusEl.classList.remove('added');
-    statusEl.innerText = 'Add To Cart';
-    statusEl.classList.remove('bg-red-600');
-    statusEl.classList.add('bg-gray-800');
-
-    cartItemCount--;
-  } else {
-    // Add to cart
-    statusEl.classList.add('added');
-    statusEl.innerText = 'Remove From Cart';
-    statusEl.classList.remove('bg-gray-800');
-    statusEl.classList.add('bg-red-600');
-
-    cartItemCount++;
-  }
-
-  // Update cart item count
-  cartCount.innerText = cartItemCount.toString();
+  // TODO: 实现购物车切换
+  // 1. 检查是否已添加（通过added类）
+  // 2. 切换按钮文字和样式
+  // 3. 更新购物车数量
 }
 
-// Filter products by search or checkbox
+/**
+ * 根据搜索词和类别筛选产品
+ * 显示或隐藏产品元素
+ */
 function filterProducts() {
-  // Get search term
-  const searchTerm = searchInput.value.trim().toLowerCase();
-  // Get checked categories
-  const checkedCategories = Array.from(checkEls)
-    .filter((check) => check.checked)
-    .map((check) => check.id);
-
-  // Loop over products and check for matches
-  productsEls.forEach((productEl, index) => {
-    const product = products[index];
-
-    // Check to see if product matches the search or checked items
-    const matchesSearchTerm = product.name.toLowerCase().includes(searchTerm);
-    const isInCheckedCategory =
-      checkedCategories.length === 0 ||
-      checkedCategories.includes(product.type);
-
-    // Show or hide product based on matches
-    if (matchesSearchTerm && isInCheckedCategory) {
-      productEl.classList.remove('hidden');
-    } else {
-      productEl.classList.add('hidden');
-    }
-  });
+  // TODO: 实现产品筛选
+  // 1. 获取搜索词
+  // 2. 获取选中的类别
+  // 3. 遍历产品，判断是否匹配
+  // 4. 显示或隐藏产品元素
 }

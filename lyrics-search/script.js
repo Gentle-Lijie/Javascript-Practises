@@ -1,99 +1,79 @@
+/**
+ * 歌词搜索应用 - Lyrics Search
+ * 
+ * 功能说明：
+ * - 根据歌曲或歌手名称搜索歌词
+ * - 显示搜索结果列表
+ * - 点击获取歌词按钮查看完整歌词
+ * - 支持分页浏览搜索结果
+ * 
+ * 需要实现的功能：
+ * 1. 获取DOM元素（表单、搜索框、结果容器、分页按钮容器）
+ * 2. 实现searchSongs()函数 - 从API搜索歌曲
+ * 3. 实现showData()函数 - 显示搜索结果列表
+ * 4. 实现getMoreSongs()函数 - 获取上一页/下一页结果
+ * 5. 实现getLyrics()函数 - 获取指定歌曲的歌词
+ * 6. 添加表单提交事件监听器
+ * 7. 添加歌词按钮点击事件监听器（事件委托）
+ */
+
+// ==================== DOM 元素获取 ====================
 const form = document.getElementById('form');
 const search = document.getElementById('search');
 const result = document.getElementById('result');
 const more = document.getElementById('more');
 
+// ==================== API配置 ====================
 const apiURL = 'https://api.lyrics.ovh';
 
-// Search by song or artist
+// ==================== 搜索函数 ====================
+
+/**
+ * 根据搜索词搜索歌曲
+ * @param {string} term - 搜索关键词
+ */
 async function searchSongs(term) {
-  const res = await fetch(`${apiURL}/suggest/${term}`);
-  const data = await res.json();
-
-  showData(data);
+  // TODO: 实现歌曲搜索
+  // 使用fetch从API获取数据
+  // 调用showData显示结果
 }
 
-// Show song and artist in DOM
+/**
+ * 在DOM中显示搜索结果
+ * 显示歌手名称、歌曲标题和获取歌词按钮
+ * @param {Object} data - 搜索结果数据
+ */
 function showData(data) {
-  result.innerHTML = `
-    <ul class="songs">
-      ${data.data
-        .map(
-          song => `<li>
-      <span><strong>${song.artist.name}</strong> - ${song.title}</span>
-      <button class="btn" data-artist="${song.artist.name}" data-songtitle="${song.title}">Get Lyrics</button>
-    </li>`
-        )
-        .join('')}
-    </ul>
-  `;
-
-  if (data.prev || data.next) {
-    more.innerHTML = `
-      ${
-        data.prev
-          ? `<button class="btn" onclick="getMoreSongs('${data.prev}')">Prev</button>`
-          : ''
-      }
-      ${
-        data.next
-          ? `<button class="btn" onclick="getMoreSongs('${data.next}')">Next</button>`
-          : ''
-      }
-    `;
-  } else {
-    more.innerHTML = '';
-  }
+  // TODO: 实现结果显示
+  // 1. 创建歌曲列表HTML
+  // 2. 为每首歌添加"获取歌词"按钮
+  // 3. 如果有上一页/下一页，显示分页按钮
 }
 
-// Get prev and next songs
+/**
+ * 获取更多歌曲（上一页/下一页）
+ * @param {string} url - 分页URL
+ */
 async function getMoreSongs(url) {
-  const res = await fetch(`https://cors-anywhere.herokuapp.com/${url}`);
-  const data = await res.json();
-
-  showData(data);
+  // TODO: 实现分页获取
 }
 
-// Get lyrics for song
+/**
+ * 获取指定歌曲的歌词
+ * @param {string} artist - 歌手名称
+ * @param {string} songTitle - 歌曲标题
+ */
 async function getLyrics(artist, songTitle) {
-  const res = await fetch(`${apiURL}/v1/${artist}/${songTitle}`);
-  const data = await res.json();
-
-   if (data.error) {
-        result.innerHTML = data.error;
-   } else {
-        const lyrics = data.lyrics.replace(/(\r\n|\r|\n)/g, '<br>');
-
-        result.innerHTML = `
-            <h2><strong>${artist}</strong> - ${songTitle}</h2>
-            <span>${lyrics}</span>
-        `;
-  }
-
-  more.innerHTML = '';
+  // TODO: 实现歌词获取
+  // 1. 从API获取歌词
+  // 2. 处理换行符显示
+  // 3. 显示歌词内容
 }
 
-// Event listeners
-form.addEventListener('submit', e => {
-  e.preventDefault();
+// ==================== 事件监听器 ====================
+// TODO: 表单提交事件 - 阻止默认提交，获取搜索词并搜索
 
-  const searchTerm = search.value.trim();
-
-  if (!searchTerm) {
-    alert('Please type in a search term');
-  } else {
-    searchSongs(searchTerm);
-  }
-});
-
-// Get lyrics button click
-result.addEventListener('click', e => {
-  const clickedEl = e.target;
-
-  if (clickedEl.tagName === 'BUTTON') {
-    const artist = clickedEl.getAttribute('data-artist');
-    const songTitle = clickedEl.getAttribute('data-songtitle');
-
-    getLyrics(artist, songTitle);
-  }
-});
+// TODO: 结果容器点击事件（事件委托）
+// 检测点击的是否为"获取歌词"按钮
+// 获取按钮上的data-artist和data-songtitle属性
+// 调用getLyrics函数

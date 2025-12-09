@@ -1,3 +1,22 @@
+/**
+ * 食谱查找器 - Meal Finder
+ * 
+ * 功能说明：
+ * - 根据关键词搜索食谱
+ * - 显示搜索结果列表
+ * - 点击食谱查看详细信息和配料
+ * - 支持获取随机食谱
+ * 
+ * 需要实现的功能：
+ * 1. 获取DOM元素（搜索框、提交按钮、随机按钮、食谱容器等）
+ * 2. 实现searchMeal()函数 - 根据关键词搜索食谱
+ * 3. 实现getMealById()函数 - 根据ID获取食谱详情
+ * 4. 实现getRandomMeal()函数 - 获取随机食谱
+ * 5. 实现addMealToDOM()函数 - 显示食谱详情
+ * 6. 添加所有事件监听器
+ */
+
+// ==================== DOM 元素获取 ====================
 const search = document.getElementById('search'),
   submit = document.getElementById('submit'),
   random = document.getElementById('random'),
@@ -5,122 +24,56 @@ const search = document.getElementById('search'),
   resultHeading = document.getElementById('result-heading'),
   single_mealEl = document.getElementById('single-meal');
 
-// Search meal and fetch from API
+// ==================== 搜索函数 ====================
+
+/**
+ * 根据关键词搜索食谱
+ * @param {Event} e - 表单提交事件
+ */
 function searchMeal(e) {
-  e.preventDefault();
-
-  // Clear single meal
-  single_mealEl.innerHTML = '';
-
-  // Get search term
-  const term = search.value;
-
-  // Check for empty
-  if (term.trim()) {
-    fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${term}`)
-      .then(res => res.json())
-      .then(data => {
-        console.log(data);
-        resultHeading.innerHTML = `<h2>Search results for '${term}':</h2>`;
-
-        if (data.meals === null) {
-          resultHeading.innerHTML = `<p>There are no search results. Try again!<p>`;
-        } else {
-          mealsEl.innerHTML = data.meals
-            .map(
-              meal => `
-            <div class="meal">
-              <img src="${meal.strMealThumb}" alt="${meal.strMeal}" />
-              <div class="meal-info" data-mealID="${meal.idMeal}">
-                <h3>${meal.strMeal}</h3>
-              </div>
-            </div>
-          `
-            )
-            .join('');
-        }
-      });
-    // Clear search text
-    search.value = '';
-  } else {
-    alert('Please enter a search term');
-  }
+  // TODO: 实现食谱搜索
+  // 1. 阻止表单默认提交
+  // 2. 清空单个食谱显示
+  // 3. 获取搜索词
+  // 4. 使用fetch从API获取数据
+  // 5. 显示搜索结果或无结果提示
+  // 6. 清空搜索框
 }
 
-// Fetch meal by ID
+/**
+ * 根据ID获取食谱详情
+ * @param {string} mealID - 食谱ID
+ */
 function getMealById(mealID) {
-  fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealID}`)
-    .then(res => res.json())
-    .then(data => {
-      const meal = data.meals[0];
-
-      addMealToDOM(meal);
-    });
+  // TODO: 实现根据ID获取食谱
+  // 调用addMealToDOM显示详情
 }
 
-// Fetch random meal from API
+/**
+ * 获取随机食谱
+ */
 function getRandomMeal() {
-  // Clear meals and heading
-  mealsEl.innerHTML = '';
-  resultHeading.innerHTML = '';
-
-  fetch(`https://www.themealdb.com/api/json/v1/1/random.php`)
-    .then(res => res.json())
-    .then(data => {
-      const meal = data.meals[0];
-
-      addMealToDOM(meal);
-    });
+  // TODO: 实现随机食谱
+  // 1. 清空食谱列表和标题
+  // 2. 从API获取随机食谱
+  // 3. 调用addMealToDOM显示
 }
 
-// Add meal to DOM
+// ==================== 显示函数 ====================
+
+/**
+ * 将食谱详情添加到DOM
+ * 显示食谱名称、图片、分类、地区、说明和配料
+ * @param {Object} meal - 食谱对象
+ */
 function addMealToDOM(meal) {
-  const ingredients = [];
-
-  for (let i = 1; i <= 20; i++) {
-    if (meal[`strIngredient${i}`]) {
-      ingredients.push(
-        `${meal[`strIngredient${i}`]} - ${meal[`strMeasure${i}`]}`
-      );
-    } else {
-      break;
-    }
-  }
-
-  single_mealEl.innerHTML = `
-    <div class="single-meal">
-      <h1>${meal.strMeal}</h1>
-      <img src="${meal.strMealThumb}" alt="${meal.strMeal}" />
-      <div class="single-meal-info">
-        ${meal.strCategory ? `<p>${meal.strCategory}</p>` : ''}
-        ${meal.strArea ? `<p>${meal.strArea}</p>` : ''}
-      </div>
-      <div class="main">
-        <p>${meal.strInstructions}</p>
-        <h2>Ingredients</h2>
-        <ul>
-          ${ingredients.map(ing => `<li>${ing}</li>`).join('')}
-        </ul>
-      </div>
-    </div>
-  `;
+  // TODO: 实现食谱显示
+  // 1. 遍历获取所有配料和用量（strIngredient1-20, strMeasure1-20）
+  // 2. 创建HTML显示食谱信息
+  // 3. 显示配料列表
 }
 
-// Event listeners
-submit.addEventListener('submit', searchMeal);
-random.addEventListener('click', getRandomMeal);
-
-mealsEl.addEventListener('click', e => {
-  const mealInfo = e.composedPath().find(item => {
-    if (item.classList) {
-      return item.classList.contains('meal-info');
-    } else {
-      return false;
-    }
-  });
-
-  if (mealInfo) {
-    const mealID = mealInfo.getAttribute('data-mealid');
-    getMealById(mealID);
-  }
-});
+// ==================== 事件监听器 ====================
+// TODO: 表单提交事件 - 搜索食谱
+// TODO: 随机按钮点击事件 - 获取随机食谱
+// TODO: 食谱列表点击事件（事件委托）- 点击食谱查看详情

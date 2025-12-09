@@ -1,3 +1,21 @@
+/**
+ * 新年倒计时 - New Year Countdown
+ * 
+ * 功能说明：
+ * - 计算距离下一个新年的剩余时间
+ * - 实时更新天、时、分、秒显示
+ * - 在背景显示目标年份
+ * - 页面加载时显示加载动画
+ * 
+ * 需要实现的功能：
+ * 1. 获取DOM元素（天、时、分、秒显示元素、倒计时容器、年份、加载动画）
+ * 2. 计算下一个新年的日期时间
+ * 3. 实现updateCountdown()函数 - 计算并更新倒计时显示
+ * 4. 设置定时器每秒更新倒计时
+ * 5. 实现加载动画延迟显示倒计时
+ */
+
+// ==================== DOM 元素获取 ====================
 const days = document.getElementById('days');
 const hours = document.getElementById('hours');
 const minutes = document.getElementById('minutes');
@@ -6,35 +24,35 @@ const countdown = document.getElementById('countdown');
 const year = document.getElementById('year');
 const loading = document.getElementById('loading');
 
+// ==================== 时间计算 ====================
+// TODO: 获取当前年份
 const currentYear = new Date().getFullYear();
 
-const newYearTime = new Date(`January 01 ${currentYear + 1} 00:00:00`);
+// TODO: 创建下一个新年的Date对象（1月1日 00:00:00）
+const newYearTime = null;
 
-// Set background year
-year.innerText = currentYear + 1;
+// TODO: 在背景显示目标年份
 
-// Update countdown time
+// ==================== 倒计时函数 ====================
+
+/**
+ * 更新倒计时显示
+ * 计算当前时间与新年时间的差值
+ * 转换为天、时、分、秒并更新DOM
+ */
 function updateCountdown() {
-  const currentTime = new Date();
-  const diff = newYearTime - currentTime;
-
-  const d = Math.floor(diff / 1000 / 60 / 60 / 24);
-  const h = Math.floor(diff / 1000 / 60 / 60) % 24;
-  const m = Math.floor(diff / 1000 / 60) % 60;
-  const s = Math.floor(diff / 1000) % 60;
-
-  // Add values to DOM
-  days.innerHTML = d;
-  hours.innerHTML = h < 10 ? '0' + h : h;
-  minutes.innerHTML = m < 10 ? '0' + m : m;
-  seconds.innerHTML = s < 10 ? '0' + s : s;
+  // TODO: 实现倒计时计算
+  // 1. 获取当前时间
+  // 2. 计算时间差（毫秒）
+  // 3. 转换为天数：diff / 1000 / 60 / 60 / 24
+  // 4. 转换为小时：(diff / 1000 / 60 / 60) % 24
+  // 5. 转换为分钟：(diff / 1000 / 60) % 60
+  // 6. 转换为秒数：(diff / 1000) % 60
+  // 7. 更新DOM显示，个位数前补零
 }
 
-// Show spinner before countdown
-setTimeout(() => {
-  loading.remove();
-  countdown.style.display = 'flex';
-}, 1000);
+// ==================== 加载动画 ====================
+// TODO: 使用setTimeout延迟移除加载动画并显示倒计时
 
-// Run every second
-setInterval(updateCountdown, 1000);
+// ==================== 定时器 ====================
+// TODO: 使用setInterval每秒调用updateCountdown

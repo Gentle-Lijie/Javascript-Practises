@@ -1,3 +1,27 @@
+/**
+ * 音乐播放器 - Music Player
+ * 
+ * 功能说明：
+ * - 播放/暂停音乐
+ * - 上一首/下一首切换
+ * - 显示播放进度条
+ * - 点击进度条跳转播放位置
+ * - 显示当前时间和总时长
+ * 
+ * 需要实现的功能：
+ * 1. 获取DOM元素（播放器容器、按钮、音频、进度条、标题、封面等）
+ * 2. 实现loadSong()函数 - 加载歌曲信息
+ * 3. 实现playSong()函数 - 播放歌曲
+ * 4. 实现pauseSong()函数 - 暂停歌曲
+ * 5. 实现prevSong()函数 - 切换到上一首
+ * 6. 实现nextSong()函数 - 切换到下一首
+ * 7. 实现updateProgress()函数 - 更新进度条
+ * 8. 实现setProgress()函数 - 点击设置播放位置
+ * 9. 实现DurTime()函数 - 更新时间显示
+ * 10. 添加所有事件监听器
+ */
+
+// ==================== DOM 元素获取 ====================
 const musicContainer = document.getElementById('music-container');
 const playBtn = document.getElementById('play');
 const prevBtn = document.getElementById('prev');
@@ -11,168 +35,93 @@ const cover = document.getElementById('cover');
 const currTime = document.querySelector('#currTime');
 const durTime = document.querySelector('#durTime');
 
-// Song titles
+// ==================== 歌曲数据 ====================
+// 歌曲标题数组（与music和images文件夹中的文件名对应）
 const songs = ['hey', 'summer', 'ukulele'];
 
-// Keep track of song
+// 当前歌曲索引
 let songIndex = 2;
 
-// Initially load song details into DOM
-loadSong(songs[songIndex]);
+// ==================== 初始化 ====================
+// TODO: 加载初始歌曲
 
-// Update song details
+// ==================== 歌曲控制函数 ====================
+
+/**
+ * 加载歌曲信息
+ * 更新标题、音频源和封面图
+ * @param {string} song - 歌曲名称
+ */
 function loadSong(song) {
-  title.innerText = song;
-  audio.src = `music/${song}.mp3`;
-  cover.src = `images/${song}.jpg`;
+  // TODO: 实现歌曲加载
 }
 
-// Play song
+/**
+ * 播放歌曲
+ * 添加play类，更改按钮图标为暂停
+ */
 function playSong() {
-  musicContainer.classList.add('play');
-  playBtn.querySelector('i.fas').classList.remove('fa-play');
-  playBtn.querySelector('i.fas').classList.add('fa-pause');
-
-  audio.play();
+  // TODO: 实现播放功能
 }
 
-// Pause song
+/**
+ * 暂停歌曲
+ * 移除play类，更改按钮图标为播放
+ */
 function pauseSong() {
-  musicContainer.classList.remove('play');
-  playBtn.querySelector('i.fas').classList.add('fa-play');
-  playBtn.querySelector('i.fas').classList.remove('fa-pause');
-
-  audio.pause();
+  // TODO: 实现暂停功能
 }
 
-// Previous song
+/**
+ * 切换到上一首歌曲
+ * 如果是第一首则循环到最后一首
+ */
 function prevSong() {
-  songIndex--;
-
-  if (songIndex < 0) {
-    songIndex = songs.length - 1;
-  }
-
-  loadSong(songs[songIndex]);
-
-  playSong();
+  // TODO: 实现上一首
 }
 
-// Next song
+/**
+ * 切换到下一首歌曲
+ * 如果是最后一首则循环到第一首
+ */
 function nextSong() {
-  songIndex++;
-
-  if (songIndex > songs.length - 1) {
-    songIndex = 0;
-  }
-
-  loadSong(songs[songIndex]);
-
-  playSong();
+  // TODO: 实现下一首
 }
 
-// Update progress bar
+// ==================== 进度条函数 ====================
+
+/**
+ * 更新进度条
+ * 根据当前播放时间计算进度百分比
+ * @param {Event} e - timeupdate事件
+ */
 function updateProgress(e) {
-  const { duration, currentTime } = e.srcElement;
-  const progressPercent = (currentTime / duration) * 100;
-  progress.style.width = `${progressPercent}%`;
+  // TODO: 实现进度更新
 }
 
-// Set progress bar
+/**
+ * 点击进度条设置播放位置
+ * @param {Event} e - 点击事件
+ */
 function setProgress(e) {
-  const width = this.clientWidth;
-  const clickX = e.offsetX;
-  const duration = audio.duration;
-
-  audio.currentTime = (clickX / width) * duration;
+  // TODO: 实现点击跳转
 }
 
-//get duration & currentTime for Time of song
-function DurTime (e) {
-	const {duration,currentTime} = e.srcElement;
-	var sec;
-	var sec_d;
+/**
+ * 更新当前时间和总时长显示
+ * 格式化为 MM:SS
+ * @param {Event} e - timeupdate事件
+ */
+function DurTime(e) {
+  // TODO: 实现时间显示
+}
 
-	// define minutes currentTime
-	let min = (currentTime==null)? 0:
-	 Math.floor(currentTime/60);
-	 min = min <10 ? '0'+min:min;
+// ==================== 事件监听器 ====================
 
-	// define seconds currentTime
-	function get_sec (x) {
-		if(Math.floor(x) >= 60){
-			
-			for (var i = 1; i<=60; i++){
-				if(Math.floor(x)>=(60*i) && Math.floor(x)<(60*(i+1))) {
-					sec = Math.floor(x) - (60*i);
-					sec = sec <10 ? '0'+sec:sec;
-				}
-			}
-		}else{
-		 	sec = Math.floor(x);
-		 	sec = sec <10 ? '0'+sec:sec;
-		 }
-	} 
-
-	get_sec (currentTime,sec);
-
-	// change currentTime DOM
-	currTime.innerHTML = min +':'+ sec;
-
-	// define minutes duration
-	let min_d = (isNaN(duration) === true)? '0':
-		Math.floor(duration/60);
-	 min_d = min_d <10 ? '0'+min_d:min_d;
-
-
-	 function get_sec_d (x) {
-		if(Math.floor(x) >= 60){
-			
-			for (var i = 1; i<=60; i++){
-				if(Math.floor(x)>=(60*i) && Math.floor(x)<(60*(i+1))) {
-					sec_d = Math.floor(x) - (60*i);
-					sec_d = sec_d <10 ? '0'+sec_d:sec_d;
-				}
-			}
-		}else{
-		 	sec_d = (isNaN(duration) === true)? '0':
-		 	Math.floor(x);
-		 	sec_d = sec_d <10 ? '0'+sec_d:sec_d;
-		 }
-	} 
-
-	// define seconds duration
-	
-	get_sec_d (duration);
-
-	// change duration DOM
-	durTime.innerHTML = min_d +':'+ sec_d;
-		
-};
-
-// Event listeners
-playBtn.addEventListener('click', () => {
-  const isPlaying = musicContainer.classList.contains('play');
-
-  if (isPlaying) {
-    pauseSong();
-  } else {
-    playSong();
-  }
-});
-
-// Change song
-prevBtn.addEventListener('click', prevSong);
-nextBtn.addEventListener('click', nextSong);
-
-// Time/song update
-audio.addEventListener('timeupdate', updateProgress);
-
-// Click on progress bar
-progressContainer.addEventListener('click', setProgress);
-
-// Song ends
-audio.addEventListener('ended', nextSong);
-
-// Time of song
-audio.addEventListener('timeupdate',DurTime);
+// TODO: 播放/暂停按钮点击事件
+// TODO: 上一首按钮点击事件
+// TODO: 下一首按钮点击事件
+// TODO: 音频时间更新事件 - 更新进度条
+// TODO: 进度条点击事件 - 跳转播放位置
+// TODO: 歌曲结束事件 - 自动下一首
+// TODO: 音频时间更新事件 - 更新时间显示

@@ -1,6 +1,28 @@
+/**
+ * 可排序列表 - Sortable List
+ * 
+ * 功能说明：
+ * - 显示一个打乱顺序的列表
+ * - 使用拖拽功能重新排序
+ * - 点击检查按钮验证顺序是否正确
+ * - 正确显示绿色，错误显示红色
+ * 
+ * 需要实现的功能：
+ * 1. 获取DOM元素（列表容器、检查按钮）
+ * 2. 定义正确顺序的数据数组
+ * 3. 实现createList()函数 - 创建打乱顺序的列表
+ * 4. 实现拖拽相关函数（dragStart、dragEnter、dragLeave、dragOver、dragDrop）
+ * 5. 实现swapItems()函数 - 交换列表项位置
+ * 6. 实现checkOrder()函数 - 验证顺序是否正确
+ * 7. 实现addEventListeners()函数 - 添加拖拽事件监听器
+ */
+
+// ==================== DOM 元素获取 ====================
 const draggable_list = document.getElementById('draggable-list');
 const check = document.getElementById('check');
 
+// ==================== 数据定义 ====================
+// 正确顺序的富豪榜单
 const richestPeople = [
   'Jeff Bezos',
   'Bill Gates',
@@ -14,105 +36,98 @@ const richestPeople = [
   'Larry Page'
 ];
 
-// Store listitems
+// 存储列表项DOM元素
 const listItems = [];
 
+// 记录拖拽开始的索引
 let dragStartIndex;
 
-createList();
+// ==================== 初始化 ====================
+// TODO: 调用createList()
 
-// Insert list items into DOM
+// ==================== 列表创建函数 ====================
+
+/**
+ * 创建打乱顺序的列表
+ * 1. 使用sort和Math.random()打乱数组顺序
+ * 2. 为每个人创建列表项
+ * 3. 添加拖拽事件监听器
+ */
 function createList() {
-  [...richestPeople]
-    .map(a => ({ value: a, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(a => a.value)
-    .forEach((person, index) => {
-      const listItem = document.createElement('li');
-
-      listItem.setAttribute('data-index', index);
-
-      listItem.innerHTML = `
-        <span class="number">${index + 1}</span>
-        <div class="draggable" draggable="true">
-          <p class="person-name">${person}</p>
-          <i class="fas fa-grip-lines"></i>
-        </div>
-      `;
-
-      listItems.push(listItem);
-
-      draggable_list.appendChild(listItem);
-    });
-
-  addEventListeners();
+  // TODO: 实现列表创建
+  // 1. 复制并打乱richestPeople数组
+  // 2. 遍历创建li元素
+  // 3. 设置data-index属性
+  // 4. 创建序号和可拖拽内容
+  // 5. 添加到listItems数组和DOM
+  // 6. 调用addEventListeners()
 }
 
+// ==================== 拖拽函数 ====================
+
+/**
+ * 拖拽开始 - 记录开始位置
+ */
 function dragStart() {
-  // console.log('Event: ', 'dragstart');
-  dragStartIndex = +this.closest('li').getAttribute('data-index');
+  // TODO: 获取并保存拖拽开始的索引
 }
 
+/**
+ * 拖拽进入目标 - 添加高亮样式
+ */
 function dragEnter() {
-  // console.log('Event: ', 'dragenter');
-  this.classList.add('over');
+  // TODO: 添加over类
 }
 
+/**
+ * 拖拽离开目标 - 移除高亮样式
+ */
 function dragLeave() {
-  // console.log('Event: ', 'dragleave');
-  this.classList.remove('over');
+  // TODO: 移除over类
 }
 
+/**
+ * 拖拽经过目标 - 阻止默认行为以允许放置
+ * @param {Event} e - 拖拽事件
+ */
 function dragOver(e) {
-  // console.log('Event: ', 'dragover');
-  e.preventDefault();
+  // TODO: 阻止默认行为
 }
 
+/**
+ * 放置 - 执行交换
+ */
 function dragDrop() {
-  // console.log('Event: ', 'drop');
-  const dragEndIndex = +this.getAttribute('data-index');
-  swapItems(dragStartIndex, dragEndIndex);
-
-  this.classList.remove('over');
+  // TODO: 获取放置位置索引并交换
 }
 
-// Swap list items that are drag and drop
+/**
+ * 交换两个列表项的内容
+ * @param {number} fromIndex - 起始索引
+ * @param {number} toIndex - 目标索引
+ */
 function swapItems(fromIndex, toIndex) {
-  const itemOne = listItems[fromIndex].querySelector('.draggable');
-  const itemTwo = listItems[toIndex].querySelector('.draggable');
-
-  listItems[fromIndex].appendChild(itemTwo);
-  listItems[toIndex].appendChild(itemOne);
+  // TODO: 实现内容交换
 }
 
-// Check the order of list items
+// ==================== 验证函数 ====================
+
+/**
+ * 检查当前顺序是否正确
+ * 遍历列表项，与正确顺序对比
+ * 正确添加right类，错误添加wrong类
+ */
 function checkOrder() {
-  listItems.forEach((listItem, index) => {
-    const personName = listItem.querySelector('.draggable').innerText.trim();
-
-    if (personName !== richestPeople[index]) {
-      listItem.classList.add('wrong');
-    } else {
-      listItem.classList.remove('wrong');
-      listItem.classList.add('right');
-    }
-  });
+  // TODO: 实现顺序验证
 }
 
+/**
+ * 为所有可拖拽元素添加事件监听器
+ */
 function addEventListeners() {
-  const draggables = document.querySelectorAll('.draggable');
-  const dragListItems = document.querySelectorAll('.draggable-list li');
-
-  draggables.forEach(draggable => {
-    draggable.addEventListener('dragstart', dragStart);
-  });
-
-  dragListItems.forEach(item => {
-    item.addEventListener('dragover', dragOver);
-    item.addEventListener('drop', dragDrop);
-    item.addEventListener('dragenter', dragEnter);
-    item.addEventListener('dragleave', dragLeave);
-  });
+  // TODO: 为draggable元素添加dragstart事件
+  // TODO: 为li元素添加dragover、drop、dragenter、dragleave事件
 }
 
-check.addEventListener('click', checkOrder);
+// ==================== 事件监听器 ====================
+// TODO: 检查按钮点击事件
