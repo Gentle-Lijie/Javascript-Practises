@@ -26,9 +26,13 @@ const doubleBtn = document.getElementById('double');
 const showMillionairesBtn = document.getElementById('show-millionaires');
 const sortBtn = document.getElementById('sort');
 const calculateWealthBtn = document.getElementById('calculate-wealth');
+const sidebar = document.getElementsByTagName('aside')[0];
+const people = document.getElementById('people');
+const total = document.getElementById('total');
 
 // ==================== 数据存储 ====================
 let data = [];
+let isTotalShown = false;
 
 // ==================== API函数 ====================
 
@@ -39,6 +43,20 @@ let data = [];
  */
 async function getRandomUser() {
   // TODO: 实现获取随机用户
+  try {
+    const res = await fetch('https://randomuser.me/api');
+    const result = await res.json();
+    const user = result.results[0];
+
+    const newUser = {
+      name: `${user.name.first} ${user.name.last}`,
+      money: Math.floor(Math.random() * 1000000)
+    };
+    console.log("Got user:", newUser);
+    addData(newUser);
+  } catch (err) {
+    console.error('Error fetching random user:', err);
+  }
 }
 
 // ==================== 数组操作函数 ====================
@@ -49,6 +67,8 @@ async function getRandomUser() {
  */
 function doubleMoney() {
   // TODO: 使用map实现
+  data = data.map(function (user) { return { name: user.name, money: user.money * 2 }; }); // Must return a whole thing, rather than just money. Doesn't make direct patch to the original array.
+  updateDOM();
 }
 
 /**
@@ -57,6 +77,8 @@ function doubleMoney() {
  */
 function sortByRichest() {
   // TODO: 使用sort实现
+  data.sort(function (a, b) { return b.money - a.money; });
+  updateDOM();
 }
 
 /**
@@ -65,6 +87,14 @@ function sortByRichest() {
  */
 function showMillionaires() {
   // TODO: 使用filter实现
+  if (showMillionairesBtn.classList.contains('active')) {
+    showMillionairesBtn.classList.remove('active');
+    updateDOM();
+    return;
+  }
+  millionaires = data.filter(function (user) { return user.money > 1000000; });
+  showMillionairesBtn.classList.add('active');
+  updateDOM(millionaires);
 }
 
 /**
@@ -73,6 +103,16 @@ function showMillionaires() {
  */
 function calculateWealth() {
   // TODO: 使用reduce实现
+  const totalWealth = data.reduce(function (acc, user) {
+    return acc + user.money;
+  }, 0);
+  var totalWealthLoop = 0;
+  for (user of data) { totalWealthLoop += user.money; }
+  const wealthEl = document.createElement('div');
+  wealthEl.innerHTML = `<h3>Total Wealth: <strong>${formatMoney(totalWealth)}</strong></h3>`;
+  total.innerHTML = '';
+  total.appendChild(wealthEl);
+  calculateWealthBtn.classList.add('active');
 }
 
 // ==================== 辅助函数 ====================
@@ -82,6 +122,8 @@ function calculateWealth() {
  * @param {Object} obj - 用户对象
  */
 function addData(obj) {
+  data.push(obj);
+  updateDOM();
   // TODO: 实现添加数据
 }
 
@@ -91,6 +133,14 @@ function addData(obj) {
  */
 function updateDOM(providedData = data) {
   // TODO: 实现DOM更新
+  people.innerHTML = "";
+  for (user of providedData) {
+    var div = document.createElement('div');
+    div.className = "person";
+    div.innerHTML = `<strong>${user.name}</strong> <span class=\"money\">${formatMoney(user.money)}</span>`
+    people.appendChild(div);
+  }
+  if (isTotalShown) calculateWealth();
 }
 
 /**
@@ -99,7 +149,7 @@ function updateDOM(providedData = data) {
  * @returns {string} 格式化后的货币字符串
  */
 function formatMoney(number) {
-  // TODO: 实现金额格式化
+  return '$' + number.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
 }
 
 // ==================== 事件监听器 ====================
@@ -109,5 +159,26 @@ function formatMoney(number) {
 // TODO: 显示百万富翁按钮事件
 // TODO: 计算总财富按钮事件
 
+addUserBtn.onclick = getRandomUser;
+doubleBtn.onclick = doubleMoney;
+sortBtn.onclick = sortByRichest;
+showMillionairesBtn.onclick = showMillionaires;
+calculateWealthBtn.onclick = function () {
+  isTotalShown = !isTotalShown;
+  if (!isTotalShown) {
+    total.innerHTML = '';
+    calculateWealthBtn.classList.remove('active');
+  } else {
+    calculateWealthBtn.classList.add('active');
+    calculateWealth();
+  }
+};
+
 // ==================== 初始化 ====================
 // TODO: 初始获取几个随机用户
+
+window.onload = function () {
+  for (let i = 0; i <= 3; i++) {
+    getRandomUser();
+  }
+}
